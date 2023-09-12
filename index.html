@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Shadow DOM tests</title>
+</head>
+<body>
+	<p>Editor inside the Shadow DOM:</p>
+	<editor->
+		<h1>Hi, I am an editor!</h1>
+		<editor- class="nested">
+			<p>And I am a nested editor!</p>
+		</editor->
+	</editor->
+	<p>Some paragraph below</p>
+	<input type="text" value="test">
+	<script src="./app/main.mjs" type="module"></script>
+</body>
+</html>

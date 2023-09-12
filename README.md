@@ -1,0 +1,3 @@
+# Shadow DOM selection playground
+
+…
