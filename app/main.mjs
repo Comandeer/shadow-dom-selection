@@ -1,4 +1,5 @@
 import Editor from './Editor.mjs';
+import LightEditor from './LightEditor.mjs';
 
 customElements.whenDefined( 'editor-' ).then( () => {
 	const editor = document.querySelector( '#editor' );
@@ -7,3 +8,4 @@ customElements.whenDefined( 'editor-' ).then( () => {
 } );
 
 customElements.define( 'editor-', Editor );
+customElements.define( 'light-editor', LightEditor );
