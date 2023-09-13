@@ -7,13 +7,24 @@
 </head>
 <body>
 	<p>Editor inside the Shadow DOM:</p>
-	<editor->
+	<editor- id="editor">
 		<h1>Hi, I am an editor!</h1>
+		<table>
+			<tr>
+				<td>Cell 1.1</td>
+				<td>Cell 1.2</td>
+			</tr>
+			<tr>
+				<td>Cell 2.1</td>
+				<td>Cell 2.2</td>
+			</tr>
+		</table>
 		<editor- class="nested">
 			<p>And I am a nested editor!</p>
 		</editor->
 	</editor->
 	<p>Some paragraph below</p>
+	<p><button id="change-selection">Change selection</button></p>
 	<input type="text" value="test">
 
 	<p><label for="selectionchange"><input type="checkbox" id="selectionchange" checked> Log <code>selectionchange</code> events</label></p>

@@ -8,15 +8,21 @@ export default class Editor extends HTMLElement {
 		super();
 
 		this.#shadow = this.attachShadow( {
-			mode: 'open'
+			mode: 'closed'
 		} );
 	}
 
 	connectedCallback() {
-		this.#shadow.innerHTML = `<style> [contenteditable] {
+		this.#shadow.innerHTML = `<style>
+		[contenteditable] {
 			min-height: 2em;
 			border: 2px #f00 dashed;
-		} </style>
+		}
+
+		table, tr, td {
+			border: 1px #000 solid;
+		}
+		</style>
 		<div contenteditable>${ this.innerHTML }</div>`;
 
 		let child;
@@ -37,13 +43,34 @@ export default class Editor extends HTMLElement {
 		this.#shadow.removeEventListener( 'beforeinput', logEvent );
 	}
 
+	changeSelection() {
+		this.#shadow.querySelector( '[contenteditable]' ).focus();
+
+		const heading = this.#shadow.querySelector( 'h1' );
+		const range = document.createRange();
+
+		range.selectNodeContents( heading );
+
+		const selection = getSelection();
+
+		selection.removeAllRanges();
+		selection.addRange( range );
+	}
+
 	/**
 	 *
 	 * @param {Event} evt
 	 */
 	#logSelectionChangeEvent( evt ) {
 		const selection = getSelection();
-		const documentRange = selection.getRangeAt( 0 );
+		let documentRange;
+
+		try {
+			documentRange = selection.getRangeAt( 0 );
+		} catch {
+			return;
+		}
+
 		const isGetComposedRangesSupported = 'getComposedRanges' in selection;
 		const isShadowRootSelectionSupported = 'getSelection' in this.#shadow;
 
