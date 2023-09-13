@@ -1,5 +1,41 @@
-// Stolen from CKE5.
+/**
+ *
+ * @param {Event} evt
+ */
 export default function logEvent( evt ) {
+	evt.stopImmediatePropagation();
+
+	switch ( evt.type ) {
+		case 'beforeinput':
+			return logBeforeInputEvent( evt );
+		case 'click':
+			return logClickEvent( evt );
+		default:
+			return console.log( evt.type, evt );
+	}
+}
+
+/**
+ * @param {MouseEvent} evt
+ */
+function logClickEvent( evt ) {
+	if ( !document.querySelector( '#click' ).checked ) {
+		return;
+	}
+
+	const x = evt.clientX;
+	const y = evt.clientY;
+	const position = document.caretPositionFromPoint ? document.caretPositionFromPoint( x, y ) : document.caretRangeFromPoint( x, y );
+
+	console.log( 'click', x, y, position );
+}
+
+// Stolen from CKE5.
+function logBeforeInputEvent( evt ) {
+	if ( !document.querySelector( '#beforeinput' ).checked ) {
+		return;
+	}
+
 	console.group( `%c${ evt.type }`, 'color:red' );
 
 	if ( 'inputType' in evt ) {

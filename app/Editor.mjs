@@ -3,7 +3,6 @@ import logEvent from './logEvent.mjs';
 export default class Editor extends HTMLElement {
 	#shadow;
 	#selectionchangeListener;
-	#clickListener;
 
 	constructor() {
 		super();
@@ -26,16 +25,15 @@ export default class Editor extends HTMLElement {
 		}
 
 		this.#selectionchangeListener = evt => this.#logSelectionChangeEvent( evt );
-		this.#clickListener = evt => this.#logClickEvent( evt );
 
 		document.addEventListener( 'selectionchange', this.#selectionchangeListener );
-		this.#shadow.addEventListener( 'click', this.#clickListener );
+		this.#shadow.addEventListener( 'click', logEvent );
 		this.#shadow.addEventListener( 'beforeinput', logEvent );
 	}
 
 	disconnectedCallback() {
 		document.removeEventListener( 'selectionchange', this.#selectionchangeListener );
-		this.#shadow.removeEventListener( 'click', this.#clickListener );
+		this.#shadow.removeEventListener( 'click', logEvent );
 		this.#shadow.removeEventListener( 'beforeinput', logEvent );
 	}
 
@@ -49,7 +47,15 @@ export default class Editor extends HTMLElement {
 		const isGetComposedRangesSupported = 'getComposedRanges' in selection;
 		const isShadowRootSelectionSupported = 'getSelection' in this.#shadow;
 
+		if ( !document.querySelector( '#selectionchange' ).checked ) {
+			return;
+		}
+
 		if ( !isGetComposedRangesSupported && !isShadowRootSelectionSupported ) {
+			console.group( `%cnot working ${ evt.type }`, 'color:red' );
+			console.log( 'editor', this );
+			console.log( 'content of document range', documentRange.cloneContents() );
+			console.groupEnd();
 			return;
 		}
 
@@ -60,12 +66,11 @@ export default class Editor extends HTMLElement {
 			const shadowRootSelection = this.#shadow.getSelection();
 			const shadowRootRange = shadowRootSelection.rangeCount > 0 ? shadowRootSelection.getRangeAt( 0 ) : null;
 
-			console.log(
-				'legacy selectionchange',
-				this,
-				documentRange.cloneContents(),
-				shadowRootRange ? shadowRootRange.cloneContents() : null
-			);
+			console.group( `%clegacy ${ evt.type }`, 'color:red' );
+			console.log( 'editor', this );
+			console.log( 'content of document range', documentRange.cloneContents() );
+			console.log( 'content of shadow range', shadowRootRange ? shadowRootRange.cloneContents() : null );
+			console.groupEnd();
 
 			return;
 		}
@@ -79,23 +84,11 @@ export default class Editor extends HTMLElement {
 		range.setStart( composedRange.startContainer, composedRange.startOffset );
 		range.setEnd( composedRange.endContainer, composedRange.endOffset );
 
-		console.log(
-			'selectionchange',
-			this,
-			documentRange.cloneContents(),
-			composedRange,
-			range.cloneContents()
-		);
-	}
-
-	/**
-	 * @param {MouseEvent} evt
-	 */
-	#logClickEvent( evt ) {
-		const x = evt.clientX;
-		const y = evt.clientY;
-		const position = document.caretPositionFromPoint ? document.caretPositionFromPoint( x, y ) : document.caretRangeFromPoint( x, y );
-
-		console.log( 'click', x, y, position );
+		console.group( `%c${ evt.type }`, 'color:red' );
+		console.log( 'editor', this );
+		console.log( 'content of document range', documentRange.cloneContents() );
+		console.log( 'composed range', composedRange );
+		console.log( 'content of the range based on composed one', range.cloneContents() );
+		console.groupEnd();
 	}
 }
