@@ -80,7 +80,7 @@ function logTargetRanges( evt ) {
 
 function logSelection() {
 	const selection = document.getSelection();
-	const ranges = selection.getComposedRanges();
+	const ranges = [];
 
 	for ( let i = 0; i < selection.rangeCount; i++ ) {
 		ranges.push( selection.getRangeAt( i ) );

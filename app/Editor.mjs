@@ -81,7 +81,7 @@ export default class Editor extends HTMLElement {
 		if ( !isGetComposedRangesSupported && !isShadowRootSelectionSupported ) {
 			console.group( `%cnot working ${ evt.type }`, 'color:red' );
 			console.log( 'editor', this );
-			console.log( 'content of document range', documentRange.cloneContents() );
+			console.log( 'content of document range', stringifyRangeContent( documentRange ) );
 			console.groupEnd();
 			return;
 		}
@@ -95,8 +95,8 @@ export default class Editor extends HTMLElement {
 
 			console.group( `%clegacy ${ evt.type }`, 'color:red' );
 			console.log( 'editor', this );
-			console.log( 'content of document range', documentRange.cloneContents() );
-			console.log( 'content of shadow range', shadowRootRange ? shadowRootRange.cloneContents() : null );
+			console.log( 'content of document range', stringifyRangeContent( documentRange ) );
+			console.log( 'content of shadow range', shadowRootRange ? stringifyRangeContent( shadowRootRange ) : null );
 			console.groupEnd();
 
 			return;
@@ -113,9 +113,22 @@ export default class Editor extends HTMLElement {
 
 		console.group( `%c${ evt.type }`, 'color:red' );
 		console.log( 'editor', this );
-		console.log( 'content of document range', documentRange.cloneContents() );
+		console.log( 'content of document range', stringifyRangeContent( documentRange ) );
 		console.log( 'composed range', composedRange );
-		console.log( 'content of the range based on composed one', range.cloneContents() );
+		console.log( 'content of the range based on composed one', stringifyRangeContent( range ) );
 		console.groupEnd();
 	}
+}
+
+/**
+ *
+ * @param {Range} range
+ */
+function stringifyRangeContent( range ) {
+	const cloned = range.cloneContents();
+	const body = document.createElement( 'body' );
+
+	body.append( cloned );
+
+	return body.innerHTML;
 }
