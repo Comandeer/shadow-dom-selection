@@ -16,6 +16,7 @@ export default class Editor extends HTMLElement {
 		this.#shadow.innerHTML = `<style>
 		[contenteditable] {
 			min-height: 2em;
+			padding: 1em;
 			border: 2px #f00 dashed;
 		}
 

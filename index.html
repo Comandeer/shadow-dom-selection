@@ -30,26 +30,9 @@
 		</editor->
 	</editor->
 	<p>Some paragraph below</p>
-	<p><button id="change-selection">Change selection</button></p>
+	<p><button id="change-selection-shadow">Change selection (Shadow DOM)</button></p>
+	<p><button id="change-selection-light">Change selection (Light DOM)</button></p>
 	<input type="text" value="test">
-
-	<p>Editor inside the light DOM:</p>
-	<light-editor id="editor">
-		<h1>Hi, I am an editor!</h1>
-		<table>
-			<tr>
-				<td>Cell 1.1</td>
-				<td>Cell 1.2</td>
-			</tr>
-			<tr>
-				<td>Cell 2.1</td>
-				<td>Cell 2.2</td>
-			</tr>
-		</table>
-		<light-editor class="nested">
-			<p>And I am a nested editor!</p>
-		</light-editor>
-	</light-editor>
 
 	<p><label for="selectionchange"><input type="checkbox" id="selectionchange" checked> Log <code>selectionchange</code> events</label></p>
 	<p><label for="click"><input type="checkbox" id="click" checked> Log <code>click</code> events</label></p>
